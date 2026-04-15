@@ -1,6 +1,6 @@
 {
   "name": "zilliz",
-  "version": "0.1.0",
-  "description": "Drive Zilliz Cloud and Milvus from Gemini CLI via zilliz-cli (no MCP).",
+  "version": "1.0.0",
+  "description": "Drive Zilliz Cloud from Gemini CLI via zilliz-cli.",
   "contextFileName": "GEMINI.md"
 }

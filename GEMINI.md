@@ -1,8 +1,8 @@
 # Zilliz Cloud Extension for Gemini CLI
 
-This extension lets Gemini CLI drive **Zilliz Cloud** and **Milvus** by executing
-`zilliz-cli` commands on your behalf. Gemini will construct and run the appropriate
-CLI commands; you review and approve before any destructive action.
+This extension lets Gemini CLI drive **Zilliz Cloud** by executing `zilliz-cli`
+commands on your behalf. Gemini will construct and run the appropriateCLI commands;
+you review and approve before any destructive action.
 
 ---
 

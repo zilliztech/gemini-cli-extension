@@ -1,6 +1,6 @@
 # zilliz — Gemini CLI Extension
 
-Drive **Zilliz Cloud** and **Milvus** from [Gemini CLI](https://github.com/google-gemini/gemini-cli)
+Drive **Zilliz Cloud** from [Gemini CLI](https://github.com/google-gemini/gemini-cli)
 using `zilliz-cli` commands. No MCP server required.
 
 ## What it does
