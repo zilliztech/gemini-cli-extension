@@ -58,6 +58,20 @@ Hand-maintained (safe to edit directly):
 
 ### Sync from upstream
 
+**Recommended: use the Claude Code skill.**
+
+Open this repo in Claude Code and ask naturally — e.g. *"sync from
+zilliz-plugin"*, *"同步上游"*, or *"check if the plugin upstream
+changed"*. The `sync-zilliz-plugin` skill in
+`.claude/skills/sync-zilliz-plugin/SKILL.md` auto-activates and walks
+the full loop: run the script, review `git diff`, call out any
+regressions the neutralizer missed, update `.sync-state.json`, and
+draft a commit message referencing the upstream short SHA. This is the
+preferred path because the skill encodes the review checklist that a
+bare script invocation skips.
+
+**Manual fallback: invoke the script directly.**
+
 ```bash
 node scripts/sync.mjs                   # rewrite, update .sync-state.json
 node scripts/sync.mjs --check           # CI drift check (exit 1 on drift)
@@ -66,10 +80,13 @@ SYNC_BRANCH=master node scripts/sync.mjs
 GITHUB_TOKEN=... node scripts/sync.mjs  # avoid 60/hr rate limit
 ```
 
-Workflow:
+Workflow if you go manual:
 
 1. Run the sync.
-2. `git diff commands/zilliz/` — review.
+2. `git diff commands/zilliz/` — review, especially for Claude-specific
+   phrasing the `neutralize()` rules missed. If you spot any, add a
+   rule in `scripts/sync.mjs` and resync rather than hand-editing the
+   TOML.
 3. Smoke-test a couple of commands in the Gemini REPL.
 4. Commit the TOML changes and `.sync-state.json` together with a
    message referencing the upstream short SHA.
