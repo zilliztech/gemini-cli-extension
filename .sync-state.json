@@ -1,0 +1,55 @@
+{
+  "upstream": "zilliztech/zilliz-plugin",
+  "branch": "main",
+  "syncedAt": "2026-04-15T07:35:34.899Z",
+  "files": {
+    "cluster": {
+      "source": "skills/cluster/SKILL.md",
+      "sha": null
+    },
+    "database": {
+      "source": "skills/database/SKILL.md",
+      "sha": null
+    },
+    "collection": {
+      "source": "skills/collection/SKILL.md",
+      "sha": null
+    },
+    "partition": {
+      "source": "skills/partition/SKILL.md",
+      "sha": null
+    },
+    "index": {
+      "source": "skills/index/SKILL.md",
+      "sha": null
+    },
+    "vector": {
+      "source": "skills/vector/SKILL.md",
+      "sha": null
+    },
+    "import": {
+      "source": "skills/import/SKILL.md",
+      "sha": null
+    },
+    "backup": {
+      "source": "skills/backup/SKILL.md",
+      "sha": null
+    },
+    "user-role": {
+      "source": "skills/user-role/SKILL.md",
+      "sha": null
+    },
+    "monitoring": {
+      "source": "skills/monitoring/SKILL.md",
+      "sha": null
+    },
+    "project-region": {
+      "source": "skills/project-region/SKILL.md",
+      "sha": null
+    },
+    "billing": {
+      "source": "skills/billing/SKILL.md",
+      "sha": null
+    }
+  }
+}

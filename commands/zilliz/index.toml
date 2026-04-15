@@ -4,8 +4,8 @@ You are helping the user with Zilliz index operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed, logged in, and cluster context set (see /zilliz:setup).
-2. Target collection must exist (see /zilliz:collection).
+1. CLI installed, logged in, and cluster context set (run `/zilliz:setup`).
+2. Target collection must exist (run `/zilliz:collection`).
 
 ## Commands Reference
 

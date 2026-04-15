@@ -4,8 +4,8 @@ You are helping the user with Zilliz monitoring operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed and logged in (see /zilliz:setup).
-2. Cluster context set for collection-level monitoring (see /zilliz:setup).
+1. CLI installed and logged in (run `/zilliz:setup`).
+2. Cluster context set for collection-level monitoring (run `/zilliz:setup`).
 
 ## Commands Reference
 
@@ -57,7 +57,7 @@ For cluster-wide time series (CU sizing, storage, serverless VCU, slow queries) 
 zilliz cluster metrics --cluster-id <cluster-id> -m CU_COMPUTATION --period 1h
 ```
 
-For per-collection time series (QPS, latency, entity counts, hybrid-search aliases) use `zilliz collection metrics` -- see /zilliz:collection for metric scope rules and the full alias list:
+For per-collection time series (QPS, latency, entity counts, hybrid-search aliases) use `zilliz collection metrics` -- run `/zilliz:collection` for metric scope rules and the full alias list:
 
 ```bash
 zilliz collection metrics -c <collection-name> -m SEARCH_QPS --period 1h
@@ -86,7 +86,7 @@ Gather this by running `collection list`, then `get-stats` and `get-load-state` 
 
 ## Live help
 
-!{zilliz cluster --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz monitoring --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
 
 Destructive operations require explicit user confirmation before execution.
 

@@ -4,7 +4,7 @@ You are helping the user with Zilliz collection operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed, logged in, and cluster context set (see /zilliz:setup).
+1. CLI installed, logged in, and cluster context set (run `/zilliz:setup`).
 
 ## Commands Reference
 
@@ -12,7 +12,7 @@ All collection commands accept an optional `--database <db-name>` flag to target
 
 ## Collection metrics
 
-Query per-collection metrics against the Zilliz Cloud metrics API with `collectionName` set in the request body. Mirrors the web console Collection Detail > Metrics page.
+Query per-collection metrics against `POST /v2/clusters/{clusterId}/metrics/query` with `collectionName` set in the request body. Mirrors the web console's Collection Detail > Metrics page.
 
 ```bash
 zilliz collection metrics --collection-name <collection-name> --metric <metric-name>
@@ -39,12 +39,16 @@ zilliz collection metrics -c my_coll -m SEARCH_QPS -m SEARCH_LATENCY_P99 --perio
 
 ### Metric scope
 
-`zilliz collection metrics` only accepts metrics whose scope is Collection or Both.
+Each metric is tagged with a scope. `zilliz collection metrics` only accepts metrics whose scope is `Collection` or `Both`. Using a Cluster-only metric emits:
+
+```
+Metric '<NAME>' is cluster-scope only and cannot be used with --collection-name.
+```
 
 | Scope | Metrics |
 |-------|---------|
 | Cluster only (rejected here) | `CU_COMPUTATION`, `CU_CAPACITY`, `CU_SIZE`, `REPLICA_COUNT`, `STORAGE`, `COLLECTIONS`, `SLOW_QUERIES`, `READ_VCU`, `WRITE_VCU` |
-| Collection / Both (allowed) | `SEARCH_QPS`, `QUERY_QPS`, `INSERT_QPS`, `UPSERT_QPS`, `DELETE_QPS`, `BULK_INSERT_QPS`, `SEARCH_LATENCY_AVG/P99`, `QUERY_LATENCY_AVG/P99`, `INSERT_LATENCY_AVG/P99`, `UPSERT_LATENCY_AVG/P99`, `DELETE_LATENCY_AVG/P99`, VPS counters, failure-rate counters, `ENTITIES`, `ENTITIES_LOADED`, `ENTITIES_INDEXED`, plus hybrid-search aliases |
+| Collection / Both (allowed) | `SEARCH_QPS`, `QUERY_QPS`, `INSERT_QPS`, `UPSERT_QPS`, `DELETE_QPS`, `BULK_INSERT_QPS`, `SEARCH_LATENCY_AVG/P99`, `QUERY_LATENCY_AVG/P99`, `INSERT_LATENCY_AVG/P99`, `UPSERT_LATENCY_AVG/P99`, `DELETE_LATENCY_AVG/P99`, VPS counters, failure-rate counters, `ENTITIES`, `ENTITIES_LOADED`, `ENTITIES_INDEXED`, plus the hybrid-search aliases below |
 
 ### Hybrid-search aliases
 
@@ -55,7 +59,7 @@ zilliz collection metrics -c my_coll -m SEARCH_QPS -m SEARCH_LATENCY_P99 --perio
 | `HYBRID_SEARCH_LATENCY_P99` | `REQ_HYBRID_SEARCH_LATENCY_P99` |
 | `HYBRID_SEARCH_FAIL_RATE` | `REQ_FAIL_RATE_HYBRID_SEARCH` |
 
-For cluster-wide metrics (CU sizing, storage, serverless VCU, slow queries) use `zilliz cluster metrics` instead -- see /zilliz:monitoring.
+For cluster-wide metrics (CU sizing, storage, serverless VCU, slow queries) use `zilliz cluster metrics` instead -- run `/zilliz:monitoring`.
 
 ### Create a Collection
 
@@ -68,7 +72,7 @@ zilliz collection create --name <collection-name> --dimension <vector-dimension>
 #   --primary-field <primary-key-field-name>
 #   --vector-field <vector-field-name>
 #   --database <database-name>
-# Or use raw JSON: --body '{"schema": {"fields": [...]}}'
+# Or use raw JSON: --body '{"schema": {"fields": [{"fieldName": "id", "dataType": "Int64", "isPrimary": true}, {"fieldName": "vector", "dataType": "FloatVector", "elementTypeParams": {"dim": "768"}}]}}'
 ```
 
 ### List Collections

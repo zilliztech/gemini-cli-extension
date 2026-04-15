@@ -4,7 +4,7 @@ You are helping the user with Zilliz backup operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed and logged in (see /zilliz:setup).
+1. CLI installed and logged in (run `/zilliz:setup`).
 2. No cluster context required -- backup operations use `--cluster-id` directly.
 
 ## Commands Reference
@@ -102,9 +102,9 @@ Start time: `HH:MM` or `HH:MM-HH:MM` (time window), e.g. `02:00` or `03:00-05:00
 
 ## Guidance
 
-- The backup type is automatically derived: if `--collection` is provided, it is a COLLECTION backup; otherwise it is a CLUSTER backup.
+- The backup type is automatically derived: if `--collection` is provided, it's a COLLECTION backup; otherwise it's a CLUSTER backup.
 - Backup creation, export, and restore operations are **asynchronous**. After starting, use `backup describe` to check progress.
-- The `--integration-id` for export refers to a cloud storage integration configured in the Zilliz Cloud console (see /zilliz:import for setup guidance).
+- The `--integration-id` for export refers to a cloud storage integration configured in the Zilliz Cloud console (run `/zilliz:import` for setup guidance).
 - Before deleting a backup, confirm with the user -- this is irreversible.
 - When restoring, explain the difference between cluster restore (new cluster) and collection restore (into existing cluster).
 - Suggest setting up a backup policy for production clusters.

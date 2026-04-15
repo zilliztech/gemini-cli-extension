@@ -1,10 +1,10 @@
-description = "Use when the user wants to manage Zilliz Cloud projects or storage volumes. For cloud regions and providers, see the cluster command."
+description = "Use when the user wants to manage Zilliz Cloud projects or storage volumes. For cloud regions and providers, run `/zilliz:cluster`."
 prompt = '''
-You are helping the user with Zilliz project and storage volume operations via `zilliz-cli`.
+You are helping the user with Zilliz project-region operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed and logged in (see /zilliz:setup).
+1. CLI installed and logged in (run `/zilliz:setup`).
 
 ## Commands Reference
 
@@ -61,13 +61,13 @@ zilliz volume delete --name <volume-name-to-delete>
 
 ## Guidance
 
-- When the user wants to create a cluster, they need a project ID and region ID first. Guide them through `zilliz project list` and `zilliz cluster regions` (see /zilliz:cluster).
+- When the user wants to create a cluster, they need a project ID and region ID first. Guide them through `zilliz project list` and `zilliz cluster regions` (run `/zilliz:cluster`).
 - Project `upgrade` does not include `Free` as a valid target plan -- only Serverless, Standard, and Enterprise.
 - Before deleting a volume, confirm with the user.
 
 ## Live help
 
-!{zilliz project --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz project-region --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
 
 Destructive operations require explicit user confirmation before execution.
 

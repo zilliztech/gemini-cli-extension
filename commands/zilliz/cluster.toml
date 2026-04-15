@@ -4,7 +4,7 @@ You are helping the user with Zilliz cluster operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed and logged in (see /zilliz:setup).
+1. CLI installed and logged in (run `/zilliz:setup`).
 2. No cluster context required -- these are control-plane operations.
 
 ## Commands Reference
@@ -104,7 +104,7 @@ zilliz cluster regions
 - Before deleting a cluster, always confirm with the user -- this is irreversible.
 - After creating a cluster, suggest setting it as the active context with `zilliz context set --cluster-id <id>`.
 - When a cluster is suspended, remind the user it must be resumed before data-plane operations.
-- Different cluster types have different capabilities (Free, Serverless, Dedicated).
+- Different cluster types have different capabilities. See the "Cluster Type Differences" table in `/zilliz:setup` for details.
 
 ## Live help
 

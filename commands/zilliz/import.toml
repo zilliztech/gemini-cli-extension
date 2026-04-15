@@ -1,10 +1,10 @@
 description = "Use when the user wants to import bulk data into a Milvus collection via Zilliz Cloud import jobs."
 prompt = '''
-You are helping the user with Zilliz bulk data import operations via `zilliz-cli`.
+You are helping the user with Zilliz import operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed and logged in (see /zilliz:setup).
+1. CLI installed and logged in (run `/zilliz:setup`).
 2. Target collection must exist on the target cluster.
 
 ## Commands Reference

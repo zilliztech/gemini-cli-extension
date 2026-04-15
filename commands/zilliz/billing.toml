@@ -4,7 +4,7 @@ You are helping the user with Zilliz billing operations via `zilliz-cli`.
 
 ## Prerequisites
 
-1. CLI installed and logged in via OAuth (see /zilliz:setup).
+1. CLI installed and logged in via OAuth (run `/zilliz:setup`).
 2. Billing features require OAuth login -- API Key mode may not have access.
 
 ## Commands Reference
@@ -46,6 +46,8 @@ zilliz billing invoices --page-size 10 --page 1
 ```bash
 zilliz billing invoices --invoice-id inv-xxxxxxxxxxxx
 ```
+
+
 
 ## Guidance
 
