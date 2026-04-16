@@ -1,55 +1,55 @@
 {
   "upstream": "zilliztech/zilliz-plugin",
   "branch": "main",
-  "syncedAt": "2026-04-15T07:35:34.899Z",
+  "syncedAt": "2026-04-16T06:16:43.671Z",
   "files": {
     "cluster": {
       "source": "skills/cluster/SKILL.md",
-      "sha": null
+      "sha": "2671a6e1a87f8c97008ad5b9d7dc88f2af3b9c3c"
     },
     "database": {
       "source": "skills/database/SKILL.md",
-      "sha": null
+      "sha": "2671a6e1a87f8c97008ad5b9d7dc88f2af3b9c3c"
     },
     "collection": {
       "source": "skills/collection/SKILL.md",
-      "sha": null
+      "sha": "e0d97d9eecc4a39a564e3a0ce268505235f51389"
     },
     "partition": {
       "source": "skills/partition/SKILL.md",
-      "sha": null
+      "sha": "2671a6e1a87f8c97008ad5b9d7dc88f2af3b9c3c"
     },
     "index": {
       "source": "skills/index/SKILL.md",
-      "sha": null
+      "sha": "2671a6e1a87f8c97008ad5b9d7dc88f2af3b9c3c"
     },
     "vector": {
       "source": "skills/vector/SKILL.md",
-      "sha": null
+      "sha": "2671a6e1a87f8c97008ad5b9d7dc88f2af3b9c3c"
     },
     "import": {
       "source": "skills/import/SKILL.md",
-      "sha": null
+      "sha": "2671a6e1a87f8c97008ad5b9d7dc88f2af3b9c3c"
     },
     "backup": {
       "source": "skills/backup/SKILL.md",
-      "sha": null
+      "sha": "5b5b8933e61d2f659293bf34715a948eab65c849"
     },
     "user-role": {
       "source": "skills/user-role/SKILL.md",
-      "sha": null
+      "sha": "5b5b8933e61d2f659293bf34715a948eab65c849"
     },
     "monitoring": {
       "source": "skills/monitoring/SKILL.md",
-      "sha": null
+      "sha": "e0d97d9eecc4a39a564e3a0ce268505235f51389"
     },
     "project-region": {
       "source": "skills/project-region/SKILL.md",
-      "sha": null
+      "sha": "5b5b8933e61d2f659293bf34715a948eab65c849"
     },
     "billing": {
       "source": "skills/billing/SKILL.md",
-      "sha": null
+      "sha": "55a99c3ac00ff75dae1ea32ff516a373b6cb7930"
     }
   }
 }
