@@ -1,0 +1,31 @@
+description = "Use when the user wants to describe job resources."
+prompt = '''
+You are helping the user with Zilliz job operations via `zilliz-cli`.
+
+## Prerequisites
+
+- `zilliz` CLI installed and authenticated.
+- An active cluster context for any operation targeting a specific cluster.
+
+## Commands Reference
+
+### Describe — Get status of an async job (backup, restore, migration, import, etc.).
+
+```bash
+zilliz job describe --job-id <job-id>
+#   [--api-key <api-key>]
+```
+
+**Flags:**
+- `--job-id` (**required**, `string`) — job ID (e.g. job-xxxxxxxxxxxxxxxxxxxx)
+- `--api-key` (`string`, env `ZILLIZ_API_KEY`) — API key (overrides env/config)
+
+## Live help
+
+!{zilliz job --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+
+Destructive operations require explicit user confirmation before execution.
+
+User request: {{args}}
+
+'''

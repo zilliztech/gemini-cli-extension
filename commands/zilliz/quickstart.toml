@@ -1,92 +1,30 @@
 description = "Set up Zilliz Cloud CLI — install, authenticate, and configure your cluster context in one go."
 prompt = '''
-You are helping the user with Zilliz Cloud CLI quickstart setup via `zilliz-cli`.
+You are guiding the user through setting up and using Zilliz Cloud via `zilliz-cli` for the first time.
 
-Guide the user through the complete Zilliz Cloud CLI setup. Follow these steps in order:
+## Steps
 
-## Step 1: Install zilliz-cli
+1. **Install** the CLI if missing:
+   ```bash
+   curl -fsSL https://zilliz.com/cli/install.sh | bash
+   ```
+2. **Authenticate**:
+   ```bash
+   zilliz login
+   ```
+   Or set `ZILLIZ_API_KEY` in the environment.
+3. **Pick/Create a context** (one-time per cluster):
+   ```bash
+   zilliz cluster list
+   zilliz context set
+   zilliz context current
+   ```
+4. **Verify**:
+   ```bash
+   zilliz cluster describe --name <cluster-name>
+   ```
 
-Check if already installed:
-
-```bash
-zilliz --version
-```
-
-If not installed or needs upgrading:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/zilliztech/zilliz-cli/master/install.sh | bash
-```
-
-Verify:
-
-```bash
-zilliz --version
-```
-
-## Step 2: Authenticate
-
-Check if already logged in:
-
-```bash
-zilliz auth status
-```
-
-If not logged in, instruct the user to open their own terminal and run one of:
-
-1. **Browser login (recommended)** — `zilliz login` — opens browser for OAuth, full feature access.
-2. **API Key via login** — `zilliz login --api-key` — prompts for API key, no browser needed.
-3. **API Key via configure (legacy)** — `zilliz configure` — prompts for API key, simpler setup.
-4. **Environment variable** — add `export ZILLIZ_API_KEY=<key>` to `.zshrc` / `.bashrc`.
-
-**IMPORTANT:** These commands require interactive input and cannot run inside Gemini CLI. Do NOT ask the user to paste API keys into the chat.
-
-Wait for the user to confirm login is complete, then verify:
-
-```bash
-zilliz auth status
-```
-
-## Step 3: Select a Cluster
-
-List available clusters:
-
-```bash
-zilliz cluster list
-```
-
-If no clusters exist, offer to create one:
-
-```bash
-zilliz project list
-zilliz cluster regions
-zilliz cluster create --type serverless --name <name> --project-id <id> --region <region>
-```
-
-## Step 4: Set Cluster Context
-
-Set the active cluster for data operations:
-
-```bash
-zilliz context set --cluster-id <selected-cluster-id>
-```
-
-## Step 5: Verify
-
-Confirm everything works:
-
-```bash
-zilliz context current
-zilliz collection list
-```
-
-Report the setup result to the user, showing their cluster ID, endpoint, and database.
-
-## Live help
-
-!{zilliz-cli --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
-
-Destructive operations require explicit user confirmation before execution.
+Offer to run each step on behalf of the user, waiting for confirmation on any step that modifies state.
 
 User request: {{args}}
 '''

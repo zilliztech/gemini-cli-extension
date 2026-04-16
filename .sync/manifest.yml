@@ -1,0 +1,12 @@
+lastSyncedTag: zilliz-v1.1.0
+lastSyncedAt: 2026-04-16T04:02:45.780Z
+generated:
+  - GEMINI.md
+  - commands/zilliz/*.toml
+  - gemini-extension.json
+preserved:
+  - .geminiignore
+  - .sync/**
+  - CONTRIBUTING.md
+  - LICENSE
+  - README.md
