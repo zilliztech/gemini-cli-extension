@@ -47,7 +47,7 @@ zilliz cluster regions --cloud-id <aws|gcp|azure>
 ### Create a Vector Lake instance
 
 A Vector Lake (sometimes called a "VectorLake" cluster) is the storage layer
-that on-demand clusters attach to (see the `on-demand-cluster` skill). It is
+that on-demand clusters attach to (see the `on-demand-cluster` skill in the upstream zilliz plugin). It is
 created via a hand-written subcommand calling
 `POST /v2/clusters/createVectorLake`:
 
@@ -125,7 +125,7 @@ zilliz cluster regions
 - After creating a cluster, suggest setting it as the active context with `zilliz context set --cluster-id <id>`.
 - When a cluster is suspended, remind the user it must be resumed before data-plane operations.
 - Different cluster types have different capabilities. See the "Cluster Type Differences" table in `/zilliz:setup` for details.
-- `cluster create-vectorlake` creates a Vector Lake storage instance, not a regular cluster. Query workloads against it run on on-demand clusters (see the `on-demand-cluster` skill). Do not pass `--type` to this subcommand; it has its own dedicated parameter set.
+- `cluster create-vectorlake` creates a Vector Lake storage instance, not a regular cluster. Query workloads against it run on on-demand clusters (see the `on-demand-cluster` skill in the upstream zilliz plugin). Do not pass `--type` to this subcommand; it has its own dedicated parameter set.
 - `cluster list` supports a `--region-id <region>` filter for scoping to a single region.
 
 ## Live help

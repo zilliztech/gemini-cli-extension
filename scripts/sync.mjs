@@ -6,7 +6,7 @@
 //   node scripts/sync.mjs --check     # exit 1 if anything differs from upstream
 //   node scripts/sync.mjs --dry-run   # print what would change, don't write
 //
-// Scope: the 12 domain commands. setup.toml, quickstart.toml, status.toml are
+// Scope: the 13 domain commands. setup.toml, quickstart.toml, status.toml are
 // hand-maintained (setup has no upstream; quickstart/status have been adapted
 // for Gemini CLI framing).
 //
@@ -20,9 +20,12 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const UPSTREAM = 'zilliztech/zilliz-plugin';
 const BRANCH = process.env.SYNC_BRANCH || 'main';
+// Upstream moved skills under plugins/zilliz/ when the repo became a multi-plugin
+// marketplace; keep this in one place so a future move is a one-line change.
+const SOURCE_PREFIX = 'plugins/zilliz/skills';
 const DOMAINS = [
   'cluster', 'database', 'collection', 'partition', 'index', 'vector',
-  'import', 'backup', 'user-role', 'monitoring', 'project-region', 'billing',
+  'import', 'backup', 'user-role', 'acl', 'monitoring', 'project-region', 'billing',
 ];
 
 const OUT_DIR = join(REPO_ROOT, 'commands', 'zilliz');
@@ -51,15 +54,27 @@ function stripFrontmatter(md) {
   return { fm, body: m[2] };
 }
 
+// Slash-command references are only minted for commands this extension actually
+// ships (the synced domains plus the hand-maintained onboarding ones); anything
+// else stays a prose pointer at upstream rather than a dangling /zilliz: link.
+const SHIPPED = [...DOMAINS, 'setup', 'quickstart', 'status'];
+
+// Skill names may be wrapped in backticks or bold in upstream markdown.
+const SKILL_REF = /\b(see )?(?:the )?[`*_]{0,2}([a-z][\w-]*)[`*_]{0,2} skill\b/gi;
+
 // Translate Claude-specific phrasing so the prompt reads natively in Gemini CLI.
 function neutralize(body) {
   return body
     .replace(/\bClaude Code\b/g, 'Gemini CLI')
     .replace(/\bClaude CLI\b/g, 'Gemini CLI')
     .replace(/\bClaude\b/g, 'the assistant')
-    // "see X skill" / "see the X skill" -> "/zilliz:X" slash command reference.
-    .replace(/\bsee (?:the )?([a-z][\w-]*) skill\b/gi, 'run `/zilliz:$1`')
-    .replace(/\b(?:the )?([a-z][\w-]*) skill\b/gi, '`/zilliz:$1`');
+    // Single pass, so a rewritten reference is never rewritten again.
+    .replace(SKILL_REF, (_m, see, name) => {
+      if (SHIPPED.includes(name.toLowerCase())) {
+        return see ? `run \`/zilliz:${name}\`` : `\`/zilliz:${name}\``;
+      }
+      return `${see || ''}the \`${name}\` skill in the upstream zilliz plugin`;
+    });
 }
 
 function renderToml(domain, description, body) {
@@ -98,7 +113,7 @@ async function fetchLatestSha(path) {
 }
 
 async function syncDomain(domain) {
-  const source = `skills/${domain}/SKILL.md`;
+  const source = `${SOURCE_PREFIX}/${domain}/SKILL.md`;
   const [md, sha] = await Promise.all([fetchText(source), fetchLatestSha(source)]);
   const { fm, body } = stripFrontmatter(md);
   const description = neutralize(fm.description || `Zilliz ${domain} operations.`);

@@ -7,8 +7,8 @@ using `zilliz-cli` commands. No MCP server required.
 
 - Translates natural-language requests into `zilliz-cli` commands
 - Covers all major Zilliz Cloud operations: clusters, databases, collections,
-  partitions, indexes, vectors, imports, backups, users/roles, monitoring,
-  projects, and billing
+  partitions, indexes, vectors, imports, backups, users/roles, cloud access
+  control, monitoring, projects, and billing
 - Embeds live `--help` output at invocation time so the assistant always has
   up-to-date flag information
 - Requires explicit user confirmation before any destructive operation
@@ -48,6 +48,7 @@ If `zilliz-cli` is not installed, run `/zilliz:setup` after installing the exten
 | `/zilliz:import` | Bulk data import jobs |
 | `/zilliz:backup` | Backup, restore, and policy management |
 | `/zilliz:user-role` | Users, roles, and privilege management |
+| `/zilliz:acl` | Cloud-level RBAC: org/project roles, member grants, SCIM groups |
 | `/zilliz:monitoring` | Cluster and collection metrics |
 | `/zilliz:project-region` | Projects and storage volumes |
 | `/zilliz:billing` | Usage and invoice management |

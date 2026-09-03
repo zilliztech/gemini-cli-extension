@@ -10,8 +10,8 @@ you review and approve before any destructive action.
 
 Use this extension to manage every layer of Zilliz Cloud from the terminal:
 clusters, databases, collections, partitions, indexes, vectors, imports, backups,
-users/roles, monitoring, projects/regions, and billing. Gemini will translate
-natural-language requests into `zilliz-cli` invocations.
+users/roles, cloud access control, monitoring, projects/regions, and billing.
+Gemini will translate natural-language requests into `zilliz-cli` invocations.
 
 ---
 
@@ -87,6 +87,7 @@ command until completion before reporting success.
 | **import** | Start, list, check status of bulk import jobs | `zilliz import list --cluster-id <id>` |
 | **backup** | Create, list, describe, delete, export, restore backups & policies | `zilliz backup list` |
 | **user-role** | Manage users, roles, passwords, privileges (Dedicated only) | `zilliz user list` |
+| **acl** | Cloud-level RBAC: org/project roles, member grants, SCIM groups | `zilliz acl role list --type org` |
 | **monitoring** | Cluster status, collection stats, time-series metrics | `zilliz cluster describe --cluster-id <id>` |
 | **project-region** | Manage projects, cloud providers, regions, storage volumes | `zilliz project list` |
 | **billing** | Check usage, list invoices, view invoice details (OAuth only) | `zilliz billing usage --last 7d` |
@@ -120,6 +121,7 @@ command until completion before reporting success.
 | `/zilliz:import` | Bulk data import jobs |
 | `/zilliz:backup` | Backup & restore operations |
 | `/zilliz:user-role` | User, role & privilege management |
+| `/zilliz:acl` | Cloud-level RBAC over orgs, projects & clusters |
 | `/zilliz:monitoring` | Metrics, stats, and load states |
 | `/zilliz:project-region` | Projects and storage volumes |
 | `/zilliz:billing` | Usage and invoice management |

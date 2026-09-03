@@ -8,16 +8,20 @@ description: Use when the user asks to sync, update, or check drift of this gemi
 ## What this sync does
 
 `commands/zilliz/<domain>.toml` is a Gemini-CLI-native wrapper around the
-`skills/<domain>/SKILL.md` content in `zilliztech/zilliz-plugin`. The sync
-script fetches upstream, strips YAML frontmatter, neutralizes Claude-specific
+`plugins/zilliz/skills/<domain>/SKILL.md` content in `zilliztech/zilliz-plugin`
+(the path prefix lives in `SOURCE_PREFIX`). The sync script fetches upstream, strips YAML frontmatter, neutralizes Claude-specific
 phrasing, wraps the body in the TOML command template (with `!{zilliz <domain>
 --help}` injection and safety rules), and writes it back.
 
 ## Scope
 
-**In scope (12 domain commands, auto-synced):**
+**In scope (13 domain commands, auto-synced):**
 cluster, database, collection, partition, index, vector, import, backup,
-user-role, monitoring, project-region, billing.
+user-role, acl, monitoring, project-region, billing.
+
+Upstream carries further skills we deliberately do not ship yet (ask-zilliz,
+diagnose, external-collection, job, on-demand-cluster, privatelink). References
+to them are rendered as prose pointers at upstream, not `/zilliz:` links.
 
 **Out of scope (hand-maintained, do not auto-sync):**
 - `setup.toml` — no upstream source; bootstraps zilliz-cli install + auth.
@@ -56,7 +60,8 @@ Requires Node 18+ (uses built-in `fetch`).
    - New command flags or subcommands (desirable).
    - Regressions in the rendered prompt (e.g., broken markdown, orphan references).
    - Any `Claude`-flavored phrasing the neutralizer missed — if found, add a
-     rule to the `neutralize()` function in `scripts/sync.mjs`.
+     rule to the `neutralize()` function in `scripts/sync.mjs`. A cross-skill
+     reference only becomes a `/zilliz:` link when the name is in `SHIPPED`.
 3. Spot-check one TOML parses: `python3 -c "import tomllib; tomllib.loads(open('commands/zilliz/cluster.toml','rb').read())"`.
 4. If upstream added a new skill domain not in the `DOMAINS` array of
    `sync.mjs`, add it there AND create a stub local file (the script only
