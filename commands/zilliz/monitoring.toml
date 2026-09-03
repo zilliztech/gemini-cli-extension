@@ -88,7 +88,8 @@ Gather this by running `collection list`, then `get-stats` and `get-load-state` 
 
 ## Live help
 
-!{zilliz monitoring --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz cluster --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz collection --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
 
 Destructive operations require explicit user confirmation before execution.
 

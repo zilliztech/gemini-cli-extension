@@ -152,7 +152,8 @@ Common privileges by object type:
 
 ## Live help
 
-!{zilliz user-role --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz user --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz role --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
 
 Destructive operations require explicit user confirmation before execution.
 

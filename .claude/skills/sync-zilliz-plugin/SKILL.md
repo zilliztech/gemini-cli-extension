@@ -15,13 +15,14 @@ phrasing, wraps the body in the TOML command template (with `!{zilliz <domain>
 
 ## Scope
 
-**In scope (13 domain commands, auto-synced):**
+**In scope (19 domain commands, auto-synced):**
 cluster, database, collection, partition, index, vector, import, backup,
-user-role, acl, monitoring, project-region, billing.
+user-role, acl, monitoring, project-region, billing, external-collection, job,
+on-demand-cluster, privatelink, diagnose, ask-zilliz.
 
-Upstream carries further skills we deliberately do not ship yet (ask-zilliz,
-diagnose, external-collection, job, on-demand-cluster, privatelink). References
-to them are rendered as prose pointers at upstream, not `/zilliz:` links.
+That is every skill upstream ships except the onboarding trio below. If upstream
+adds another, references to it render as a prose pointer at upstream (not a
+dangling `/zilliz:` link) until it is added to `DOMAINS`.
 
 **Out of scope (hand-maintained, do not auto-sync):**
 - `setup.toml` — no upstream source; bootstraps zilliz-cli install + auth.
@@ -31,6 +32,24 @@ to them are rendered as prose pointers at upstream, not `/zilliz:` links.
 
 If the user wants to resync onboarding commands too, do it manually: diff
 against `zilliz-plugin/commands/quickstart.md` / `status.md` and merge by hand.
+
+## Three things the script does that are easy to break
+
+1. **`HELP_CMDS`** — a skill name is not always a `zilliz` subcommand. `user-role`
+   is `zilliz user` + `zilliz role`, `project-region` is `project` + `volume`,
+   `monitoring`/`diagnose` are `cluster` + `collection`, and `ask-zilliz` has no
+   CLI surface at all (empty list = no `!{}` block). Get this wrong and the
+   command silently injects "zilliz-cli not installed" instead of real help.
+   Verify with `zilliz <cmd> --help` before adding a mapping.
+2. **`ASSET_DIRS`** — `ask-zilliz` ships 14 reference files, copied into
+   `references/ask-zilliz/`. The prompt resolves that directory at runtime by
+   probing the install location, so the files must actually be committed. The
+   script errors out rather than emitting a prompt pointing at a missing dir.
+3. **`REWRITE`** — `ask-zilliz` upstream depends on an Inkeep MCP server this
+   extension does not ship; its Inkeep directives are rewritten onto the bundled
+   references plus https://docs.zilliz.com. A surviving `Inkeep` mention fails
+   the sync loudly, so upstream edits to that skill need a rewrite rule, not a
+   silent pass-through.
 
 ## How to run
 
@@ -51,7 +70,9 @@ SYNC_BRANCH=master node scripts/sync.mjs
 GITHUB_TOKEN=ghp_... node scripts/sync.mjs
 ```
 
-Requires Node 18+ (uses built-in `fetch`).
+Requires Node 18+ (uses built-in `fetch`). A full run makes ~20 GitHub API calls,
+which blows the 60/hour unauthenticated limit in three runs — pass
+`GITHUB_TOKEN=$(gh auth token)` for anything more than a one-off.
 
 ## Recommended workflow
 
@@ -62,10 +83,13 @@ Requires Node 18+ (uses built-in `fetch`).
    - Any `Claude`-flavored phrasing the neutralizer missed — if found, add a
      rule to the `neutralize()` function in `scripts/sync.mjs`. A cross-skill
      reference only becomes a `/zilliz:` link when the name is in `SHIPPED`.
-3. Spot-check one TOML parses: `python3 -c "import tomllib; tomllib.loads(open('commands/zilliz/cluster.toml','rb').read())"`.
+3. Spot-check that the TOMLs parse (`tomllib` on Python 3.11+, `tomli` below that):
+   `python3 -c "import tomli,glob; [tomli.load(open(f,'rb')) for f in glob.glob('commands/zilliz/*.toml')]"`.
 4. If upstream added a new skill domain not in the `DOMAINS` array of
-   `sync.mjs`, add it there AND create a stub local file (the script only
-   rewrites, it doesn't detect new directories automatically).
+   `sync.mjs`, add it there (the script writes the new TOML itself, but it does
+   not discover new upstream directories), give it a `HELP_CMDS` entry if the
+   name is not a `zilliz` subcommand, and add it to the README and GEMINI.md
+   command tables.
 5. Commit: `git commit -m "chore(sync): pull from zilliz-plugin @ <short-sha>"`.
    The short SHA for each file is in `.sync-state.json`.
 

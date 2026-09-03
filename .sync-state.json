@@ -1,7 +1,7 @@
 {
   "upstream": "zilliztech/zilliz-plugin",
   "branch": "main",
-  "syncedAt": "2026-09-03T09:25:14.819Z",
+  "syncedAt": "2026-09-03T09:36:13.694Z",
   "files": {
     "cluster": {
       "source": "plugins/zilliz/skills/cluster/SKILL.md",
@@ -54,6 +54,30 @@
     "acl": {
       "source": "plugins/zilliz/skills/acl/SKILL.md",
       "sha": "35c86c000c91abb35f3eeed5cca15ebd69cba4d5"
+    },
+    "external-collection": {
+      "source": "plugins/zilliz/skills/external-collection/SKILL.md",
+      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+    },
+    "job": {
+      "source": "plugins/zilliz/skills/job/SKILL.md",
+      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+    },
+    "on-demand-cluster": {
+      "source": "plugins/zilliz/skills/on-demand-cluster/SKILL.md",
+      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+    },
+    "privatelink": {
+      "source": "plugins/zilliz/skills/privatelink/SKILL.md",
+      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+    },
+    "diagnose": {
+      "source": "plugins/zilliz/skills/diagnose/SKILL.md",
+      "sha": "a672ba8a1959534b278419080eb0cf3b84f8f148"
+    },
+    "ask-zilliz": {
+      "source": "plugins/zilliz/skills/ask-zilliz/SKILL.md",
+      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     }
   }
 }

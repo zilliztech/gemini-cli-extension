@@ -93,7 +93,8 @@ zilliz volume apply --name <volume-name>
 
 ## Live help
 
-!{zilliz project-region --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz project --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
+!{zilliz volume --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}
 
 Destructive operations require explicit user confirmation before execution.
 

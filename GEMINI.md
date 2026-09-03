@@ -10,7 +10,8 @@ you review and approve before any destructive action.
 
 Use this extension to manage every layer of Zilliz Cloud from the terminal:
 clusters, databases, collections, partitions, indexes, vectors, imports, backups,
-users/roles, cloud access control, monitoring, projects/regions, and billing.
+users/roles, cloud access control, monitoring, projects/regions, PrivateLink,
+and billing.
 Gemini will translate natural-language requests into `zilliz-cli` invocations.
 
 ---
@@ -91,6 +92,12 @@ command until completion before reporting success.
 | **monitoring** | Cluster status, collection stats, time-series metrics | `zilliz cluster describe --cluster-id <id>` |
 | **project-region** | Manage projects, cloud providers, regions, storage volumes | `zilliz project list` |
 | **billing** | Check usage, list invoices, view invoice details (OAuth only) | `zilliz billing usage --last 7d` |
+| **external-collection** | Trigger, describe, list refresh jobs for external collections | `zilliz external-collection refresh list` |
+| **job** | Check or wait on async Cloud Jobs (backup, import, restore, clone) | `zilliz job describe --job-id <id> --wait` |
+| **on-demand-cluster** | Create, list, describe, delete on-demand VectorLake clusters | `zilliz on-demand-cluster list` |
+| **privatelink** | Manage PrivateLink endpoint services, endpoints, and whitelist | `zilliz privatelink list-services` |
+| **diagnose** | Read-only triage of a slow, stuck, or unhealthy cluster/collection | `zilliz cluster metrics --cluster-id <id>` |
+| **ask-zilliz** | Plans, pricing, capacity planning, schema & SDK guidance (no CLI calls) | — |
 
 ---
 
@@ -125,6 +132,12 @@ command until completion before reporting success.
 | `/zilliz:monitoring` | Metrics, stats, and load states |
 | `/zilliz:project-region` | Projects and storage volumes |
 | `/zilliz:billing` | Usage and invoice management |
+| `/zilliz:external-collection` | External collection refresh jobs |
+| `/zilliz:job` | Async Cloud Job status and waiting |
+| `/zilliz:on-demand-cluster` | On-demand (VectorLake) cluster lifecycle |
+| `/zilliz:privatelink` | PrivateLink endpoints and whitelist |
+| `/zilliz:diagnose` | Read-only health check and triage |
+| `/zilliz:ask-zilliz` | Zilliz Cloud plan, pricing & design guidance |
 
 Type a slash command followed by your request, e.g.:
 `/zilliz:cluster create a free-tier cluster in AWS us-east-1`

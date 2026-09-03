@@ -12,7 +12,7 @@
 //
 // Requires: Node 18+ (built-in fetch).
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,7 +26,26 @@ const SOURCE_PREFIX = 'plugins/zilliz/skills';
 const DOMAINS = [
   'cluster', 'database', 'collection', 'partition', 'index', 'vector',
   'import', 'backup', 'user-role', 'acl', 'monitoring', 'project-region', 'billing',
+  'external-collection', 'job', 'on-demand-cluster', 'privatelink', 'diagnose',
+  'ask-zilliz',
 ];
+
+// A skill name is not always a `zilliz` subcommand. Map the ones that differ, so
+// the injected --help is real output instead of the "not installed" fallback.
+// An empty list means the skill is advisory and has no CLI surface of its own.
+const HELP_CMDS = {
+  'user-role': ['user', 'role'],
+  'monitoring': ['cluster', 'collection'],
+  'project-region': ['project', 'volume'],
+  'diagnose': ['cluster', 'collection'],
+  'ask-zilliz': [],
+};
+const helpCmds = (domain) => HELP_CMDS[domain] ?? [domain];
+
+// Skills that ship reference material next to SKILL.md. The files are copied into
+// references/<domain>/ so the prompt points at something that actually exists.
+const ASSET_DIRS = { 'ask-zilliz': 'references' };
+const assetOutDir = (domain) => join(REPO_ROOT, 'references', domain);
 
 const OUT_DIR = join(REPO_ROOT, 'commands', 'zilliz');
 const STATE_PATH = join(REPO_ROOT, '.sync-state.json');
@@ -47,12 +66,78 @@ function stripFrontmatter(md) {
   const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!m) return { fm: {}, body: md };
   const fm = {};
-  for (const line of m[1].split(/\r?\n/)) {
-    const mm = line.match(/^([\w-]+):\s*(.*)$/);
-    if (mm) fm[mm[1]] = mm[2].trim().replace(/^["']|["']$/g, '');
+  const lines = m[1].split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const mm = lines[i].match(/^([\w-]+):\s*(.*)$/);
+    if (!mm) continue;
+    let value = mm[2].trim();
+    // YAML block scalar (`description: |`): take the indented lines that follow.
+    if (value === '|' || value === '>' || value === '|-' || value === '>-') {
+      const block = [];
+      while (i + 1 < lines.length && /^(\s+\S|\s*$)/.test(lines[i + 1])) {
+        block.push(lines[++i].trim());
+      }
+      value = block.join('\n').trim();
+    }
+    fm[mm[1]] = value.replace(/^["']|["']$/g, '');
   }
   return { fm, body: m[2] };
 }
+
+// This extension ships no MCP server, so ask-zilliz's Inkeep dependency is
+// rewritten onto the reference files we bundle plus the public docs. Rewrites
+// are targeted rather than a blanket word swap, so the prose stays grammatical;
+// syncDomain fails loudly if a new Inkeep mention slips through.
+const REWRITE = {
+  'ask-zilliz': (body) => {
+    const roleSection = [
+      '## 1. Role: Experience Layer on Top of the Bundled References',
+      '',
+      '**Bundled references** = data source (capacity specs, limits, pricing structure, feature guides)',
+      '**This command** = user experience layer (understanding, guidance, decisions)',
+      '',
+      '| References give you | You Add                                                                           |',
+      '| ------------------- | --------------------------------------------------------------------------------- |',
+      '| Raw pricing data    | Contextual recommendation for their use case                                      |',
+      '| Feature list        | Fit analysis: "Your multi-tenant SaaS needs partition keys — here’s how"          |',
+      '| Technical specs     | Decision framework: "Given your latency needs, Performance > Capacity because..." |',
+      '| Error documentation | Root cause + action: "This error means X. Check Y first, then Z."                 |',
+      '',
+      '### When the references cannot satisfy',
+      '',
+      '| Situation              | Action                                                        |',
+      '| ---------------------- | ------------------------------------------------------------- |',
+      '| Feature not documented | Check Preview status → guide to Support                       |',
+      '| Complex architecture   | Use your knowledge + the references for best-practice patterns |',
+      '| Custom integration     | Generate code from `developer-guide.md` and `api-patterns.md` |',
+      '| Edge case              | Provide solution with caveat + Support link                   |',
+      '| Custom pricing         | Estimation formula + direct to Sales                          |',
+      '| Anything live (current rates, brand-new features) | Say the references may lag and link https://docs.zilliz.com |',
+      '',
+    ].join('\n');
+
+    return body
+      // Replace the whole Inkeep-role section up to the next top-level heading.
+      .replace(/## 1\. Role: Experience Layer on Top of Inkeep[\s\S]*?(?=\n## )/, roleSection)
+      .replace(/1\. Query Inkeep MCP for current pricing/g, '1. Read `pricing.md` from the bundled references')
+      .replace(/\*\*MUST query Inkeep\*\*/g, '**MUST read `pricing.md`**')
+      .replace(/When uncertain, query Inkeep first/g, 'When uncertain, check the bundled references first')
+      .replace(/Inkeep or (`references\/[\w-]+\.md`)/g, '$1')
+      .replace(/\| Feature availability \| Inkeep +\|/g, '| Feature availability | `cluster-selection.md`, `enterprise-features.md` |')
+      .replace(/Inkeep → docs/g, 'https://docs.zilliz.com')
+      .replace(/verify rates with Inkeep/g, 'verify rates against `pricing.md` and the live calculator')
+      .replace(/query Inkeep for current vCU price/g, 'see `pricing.md` for the vCU price')
+      .replace(/\*\*Inkeep MCP\*\* → documentation search/g, '**Bundled references** → then https://docs.zilliz.com')
+      .replace(/did I query Inkeep and add disclaimer\?/g, 'did I read `pricing.md` and add the disclaimer?')
+      .replace(/^(#+ .*)Inkeep(.*)$/gm, '$1the bundled references$2');
+  },
+};
+
+// Human-readable subject for the prompt's opening line.
+const SUBJECT = {
+  'ask-zilliz': 'Zilliz Cloud questions -- plans, pricing, schema design, SDK usage, and troubleshooting',
+  'diagnose': 'read-only diagnosis of unhealthy or slow Zilliz clusters and collections',
+};
 
 // Slash-command references are only minted for commands this extension actually
 // ships (the synced domains plus the hand-maintained onboarding ones); anything
@@ -77,15 +162,67 @@ function neutralize(body) {
     });
 }
 
-function renderToml(domain, description, body) {
+// The TOML description is a single /help line; keep the first paragraph of a
+// multi-line frontmatter description and collapse its whitespace.
+function oneLine(text) {
+  return text.split(/\n\s*\n/)[0].replace(/\s+/g, ' ').trim();
+}
+
+// Bundled files are read at runtime, so the prompt resolves the installed
+// extension's directory instead of hardcoding an install path.
+function assetPreamble(domain, names) {
+  if (!names.length) return [];
+  const rel = `references/${domain}`;
+  // Extensions install either as a copy under ~/.gemini/extensions/<name>/ or as a
+  // "link" whose directory holds only .gemini-extension-install.json pointing at the
+  // source checkout -- resolve both. No braces inside: !{} ends at the first `}`.
+  const probe =
+    `!{d=""; for c in "$HOME/.gemini/extensions/zilliz" "./.gemini/extensions/zilliz"; do ` +
+    `[ -d "$c/${rel}" ] && d="$c/${rel}" && break; ` +
+    `s=$(sed -n 's/.*"source" *: *"\\([^"]*\\)".*/\\1/p' "$c/.gemini-extension-install.json" 2>/dev/null); ` +
+    `[ -n "$s" ] && [ -d "$s/${rel}" ] && d="$s/${rel}" && break; done; ` +
+    `[ -n "$d" ] && echo "$d" || ` +
+    `echo "(bundled references not found -- fall back to https://docs.zilliz.com)"}`;
+  return [
+    '',
+    '## Reference material',
+    '',
+    'Reference files ship with this extension in the directory below. Read the ones',
+    'relevant to the question with your file-reading tool before answering; do not',
+    'guess at figures they cover.',
+    '',
+    probe,
+    '',
+    `Available files: ${names.join(', ')}`,
+    '',
+    '---',
+  ];
+}
+
+function renderToml(domain, description, body, assetNames = []) {
+  const cmds = helpCmds(domain);
+  const opening = SUBJECT[domain]
+    ? `You are helping the user with ${SUBJECT[domain]}.`
+    : `You are helping the user with Zilliz ${domain} operations via \`zilliz-cli\`.`;
+
+  const liveHelp = cmds.length
+    ? [
+        '',
+        '## Live help',
+        '',
+        ...cmds.map(
+          (c) =>
+            `!{zilliz ${c} --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}`,
+        ),
+      ]
+    : [];
+
   const prompt = [
-    `You are helping the user with Zilliz ${domain} operations via \`zilliz-cli\`.`,
+    opening,
+    ...assetPreamble(domain, assetNames),
     '',
     body.trim(),
-    '',
-    '## Live help',
-    '',
-    `!{zilliz ${domain} --help 2>/dev/null || echo "zilliz-cli not installed — run /zilliz:setup first"}`,
+    ...liveHelp,
     '',
     'Destructive operations require explicit user confirmation before execution.',
     '',
@@ -112,19 +249,70 @@ async function fetchLatestSha(path) {
   return arr[0]?.sha ?? null;
 }
 
+async function listUpstreamDir(path) {
+  const r = await fetch(
+    `https://api.github.com/repos/${UPSTREAM}/contents/${path}?ref=${BRANCH}`,
+    { headers: ghHeaders },
+  );
+  if (!r.ok) return null; // rate-limited or moved; caller falls back
+  const arr = await r.json();
+  return Array.isArray(arr) ? arr.filter((e) => e.type === 'file').map((e) => e.name) : null;
+}
+
+// Copy a skill's bundled reference files into references/<domain>/.
+async function syncAssets(domain) {
+  const sub = ASSET_DIRS[domain];
+  if (!sub) return { names: [], changed: [] };
+
+  const upstreamDir = `${SOURCE_PREFIX}/${domain}/${sub}`;
+  const outDir = assetOutDir(domain);
+  let names = await listUpstreamDir(upstreamDir);
+  if (!names) {
+    // Could not list upstream (usually a rate limit): refresh what we already
+    // have rather than silently dropping files.
+    names = existsSync(outDir) ? (await readdir(outDir)).filter((n) => n.endsWith('.md')) : [];
+    if (!names.length) {
+      throw new Error(
+        `cannot list ${upstreamDir} and no local copy exists — the prompt would point at missing files. ` +
+          'Usually a GitHub API rate limit: rerun with GITHUB_TOKEN set.',
+      );
+    }
+    console.warn(`\n  ${domain}: upstream listing unavailable, refreshing ${names.length} known assets`);
+  }
+
+  const changed = [];
+  if (MODE === 'write' && names.length) await mkdir(outDir, { recursive: true });
+  for (const name of names.sort()) {
+    const text = await fetchText(`${upstreamDir}/${name}`);
+    const outPath = join(outDir, name);
+    const current = existsSync(outPath) ? await readFile(outPath, 'utf8') : '';
+    if (current === text) continue;
+    changed.push(name);
+    if (MODE === 'write') await writeFile(outPath, text);
+  }
+  return { names: names.sort(), changed };
+}
+
 async function syncDomain(domain) {
   const source = `${SOURCE_PREFIX}/${domain}/SKILL.md`;
   const [md, sha] = await Promise.all([fetchText(source), fetchLatestSha(source)]);
   const { fm, body } = stripFrontmatter(md);
-  const description = neutralize(fm.description || `Zilliz ${domain} operations.`);
-  const toml = renderToml(domain, description, neutralize(body));
+  const assets = await syncAssets(domain);
+  const description = oneLine(neutralize(fm.description || `Zilliz ${domain} operations.`));
+  const rewrite = REWRITE[domain] ?? ((b) => b);
+  const rewritten = rewrite(neutralize(body));
+  if (REWRITE[domain] && /Inkeep/.test(rewritten)) {
+    const lines = rewritten.split('\n').filter((l) => l.includes('Inkeep'));
+    throw new Error(`unrewritten Inkeep reference(s):\n    ${lines.join('\n    ')}`);
+  }
+  const toml = renderToml(domain, description, rewritten, assets.names);
 
   const outPath = join(OUT_DIR, `${domain}.toml`);
   const current = existsSync(outPath) ? await readFile(outPath, 'utf8') : '';
   const changed = current !== toml;
 
   if (MODE === 'write' && changed) await writeFile(outPath, toml);
-  return { domain, source, sha, changed, outPath };
+  return { domain, source, sha, changed: changed || assets.changed.length > 0, outPath };
 }
 
 async function main() {
