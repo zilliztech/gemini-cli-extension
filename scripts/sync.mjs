@@ -42,10 +42,16 @@ const HELP_CMDS = {
 };
 const helpCmds = (domain) => HELP_CMDS[domain] ?? [domain];
 
+// Command name when it should read better than the upstream skill name.
+// `/zilliz:ask-zilliz` stutters; the command file, its reference dir, and every
+// cross-reference to the skill all follow this map.
+const COMMAND_NAMES = { 'ask-zilliz': 'ask' };
+const commandName = (domain) => COMMAND_NAMES[domain] ?? domain;
+
 // Skills that ship reference material next to SKILL.md. The files are copied into
 // references/<domain>/ so the prompt points at something that actually exists.
 const ASSET_DIRS = { 'ask-zilliz': 'references' };
-const assetOutDir = (domain) => join(REPO_ROOT, 'references', domain);
+const assetOutDir = (domain) => join(REPO_ROOT, 'references', commandName(domain));
 
 const OUT_DIR = join(REPO_ROOT, 'commands', 'zilliz');
 const STATE_PATH = join(REPO_ROOT, '.sync-state.json');
@@ -156,7 +162,8 @@ function neutralize(body) {
     // Single pass, so a rewritten reference is never rewritten again.
     .replace(SKILL_REF, (_m, see, name) => {
       if (SHIPPED.includes(name.toLowerCase())) {
-        return see ? `run \`/zilliz:${name}\`` : `\`/zilliz:${name}\``;
+        const cmd = commandName(name.toLowerCase());
+        return see ? `run \`/zilliz:${cmd}\`` : `\`/zilliz:${cmd}\``;
       }
       return `${see || ''}the \`${name}\` skill in the upstream zilliz plugin`;
     });
@@ -172,7 +179,7 @@ function oneLine(text) {
 // extension's directory instead of hardcoding an install path.
 function assetPreamble(domain, names) {
   if (!names.length) return [];
-  const rel = `references/${domain}`;
+  const rel = `references/${commandName(domain)}`;
   // Extensions install either as a copy under ~/.gemini/extensions/<name>/ or as a
   // "link" whose directory holds only .gemini-extension-install.json pointing at the
   // source checkout -- resolve both. No braces inside: !{} ends at the first `}`.
@@ -307,7 +314,7 @@ async function syncDomain(domain) {
   }
   const toml = renderToml(domain, description, rewritten, assets.names);
 
-  const outPath = join(OUT_DIR, `${domain}.toml`);
+  const outPath = join(OUT_DIR, `${commandName(domain)}.toml`);
   const current = existsSync(outPath) ? await readFile(outPath, 'utf8') : '';
   const changed = current !== toml;
 
@@ -358,7 +365,11 @@ async function main() {
     };
     for (const r of results) {
       if (r.error) continue;
-      state.files[r.domain] = { source: r.source, sha: r.sha };
+      state.files[r.domain] = {
+        source: r.source,
+        command: commandName(r.domain),
+        sha: r.sha,
+      };
     }
     await writeFile(STATE_PATH, JSON.stringify(state, null, 2) + '\n');
   }

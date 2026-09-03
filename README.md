@@ -10,7 +10,7 @@ using `zilliz-cli` commands. No MCP server required.
   partitions, indexes, vectors, imports, backups, users/roles, cloud access
   control, monitoring, projects, PrivateLink, and billing
 - Adds two advisory commands on top of the CLI surface: `/zilliz:diagnose`
-  (read-only health check) and `/zilliz:ask-zilliz` (plan, pricing, and
+  (read-only health check) and `/zilliz:ask` (plan, pricing, and
   design guidance, backed by reference material bundled in `references/`)
 - Embeds live `--help` output at invocation time so the assistant always has
   up-to-date flag information
@@ -60,7 +60,7 @@ If `zilliz-cli` is not installed, run `/zilliz:setup` after installing the exten
 | `/zilliz:on-demand-cluster` | On-demand (Vector Lake) cluster lifecycle |
 | `/zilliz:privatelink` | PrivateLink endpoint services and whitelist |
 | `/zilliz:diagnose` | Read-only health check of a slow or failing cluster/collection |
-| `/zilliz:ask-zilliz` | Plans, pricing, capacity planning, schema and SDK guidance |
+| `/zilliz:ask` | Plans, pricing, capacity planning, schema and SDK guidance |
 
 ## Usage examples
 

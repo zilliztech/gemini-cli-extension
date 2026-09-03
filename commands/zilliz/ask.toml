@@ -8,7 +8,7 @@ Reference files ship with this extension in the directory below. Read the ones
 relevant to the question with your file-reading tool before answering; do not
 guess at figures they cover.
 
-!{d=""; for c in "$HOME/.gemini/extensions/zilliz" "./.gemini/extensions/zilliz"; do [ -d "$c/references/ask-zilliz" ] && d="$c/references/ask-zilliz" && break; s=$(sed -n 's/.*"source" *: *"\([^"]*\)".*/\1/p' "$c/.gemini-extension-install.json" 2>/dev/null); [ -n "$s" ] && [ -d "$s/references/ask-zilliz" ] && d="$s/references/ask-zilliz" && break; done; [ -n "$d" ] && echo "$d" || echo "(bundled references not found -- fall back to https://docs.zilliz.com)"}
+!{d=""; for c in "$HOME/.gemini/extensions/zilliz" "./.gemini/extensions/zilliz"; do [ -d "$c/references/ask" ] && d="$c/references/ask" && break; s=$(sed -n 's/.*"source" *: *"\([^"]*\)".*/\1/p' "$c/.gemini-extension-install.json" 2>/dev/null); [ -n "$s" ] && [ -d "$s/references/ask" ] && d="$s/references/ask" && break; done; [ -n "$d" ] && echo "$d" || echo "(bundled references not found -- fall back to https://docs.zilliz.com)"}
 
 Available files: api-patterns.md, auto-scaling.md, cloud-regions.md, cluster-selection.md, critical-operations.md, developer-guide.md, enterprise-features.md, functions-model-inference.md, global-cluster.md, limits-and-quotas.md, milvus-26-features.md, milvus-cli.md, pricing.md, volume.md
 

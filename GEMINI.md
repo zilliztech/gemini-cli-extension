@@ -97,7 +97,7 @@ command until completion before reporting success.
 | **on-demand-cluster** | Create, list, describe, delete on-demand VectorLake clusters | `zilliz on-demand-cluster list` |
 | **privatelink** | Manage PrivateLink endpoint services, endpoints, and whitelist | `zilliz privatelink list-services` |
 | **diagnose** | Read-only triage of a slow, stuck, or unhealthy cluster/collection | `zilliz cluster metrics --cluster-id <id>` |
-| **ask-zilliz** | Plans, pricing, capacity planning, schema & SDK guidance (no CLI calls) | — |
+| **ask-zilliz** (`/zilliz:ask`) | Plans, pricing, capacity planning, schema & SDK guidance (no CLI calls) | — |
 
 ---
 
@@ -137,7 +137,7 @@ command until completion before reporting success.
 | `/zilliz:on-demand-cluster` | On-demand (VectorLake) cluster lifecycle |
 | `/zilliz:privatelink` | PrivateLink endpoints and whitelist |
 | `/zilliz:diagnose` | Read-only health check and triage |
-| `/zilliz:ask-zilliz` | Zilliz Cloud plan, pricing & design guidance |
+| `/zilliz:ask` | Zilliz Cloud plan, pricing & design guidance |
 
 Type a slash command followed by your request, e.g.:
 `/zilliz:cluster create a free-tier cluster in AWS us-east-1`

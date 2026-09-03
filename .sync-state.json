@@ -1,82 +1,101 @@
 {
   "upstream": "zilliztech/zilliz-plugin",
   "branch": "main",
-  "syncedAt": "2026-09-03T09:36:13.694Z",
+  "syncedAt": "2026-09-03T09:38:02.907Z",
   "files": {
     "cluster": {
       "source": "plugins/zilliz/skills/cluster/SKILL.md",
+      "command": "cluster",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "database": {
       "source": "plugins/zilliz/skills/database/SKILL.md",
+      "command": "database",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "collection": {
       "source": "plugins/zilliz/skills/collection/SKILL.md",
+      "command": "collection",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "partition": {
       "source": "plugins/zilliz/skills/partition/SKILL.md",
+      "command": "partition",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "index": {
       "source": "plugins/zilliz/skills/index/SKILL.md",
+      "command": "index",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "vector": {
       "source": "plugins/zilliz/skills/vector/SKILL.md",
+      "command": "vector",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "import": {
       "source": "plugins/zilliz/skills/import/SKILL.md",
+      "command": "import",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "backup": {
       "source": "plugins/zilliz/skills/backup/SKILL.md",
+      "command": "backup",
       "sha": "35c86c000c91abb35f3eeed5cca15ebd69cba4d5"
     },
     "user-role": {
       "source": "plugins/zilliz/skills/user-role/SKILL.md",
+      "command": "user-role",
       "sha": "35c86c000c91abb35f3eeed5cca15ebd69cba4d5"
     },
     "monitoring": {
       "source": "plugins/zilliz/skills/monitoring/SKILL.md",
+      "command": "monitoring",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "project-region": {
       "source": "plugins/zilliz/skills/project-region/SKILL.md",
+      "command": "project-region",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "billing": {
       "source": "plugins/zilliz/skills/billing/SKILL.md",
+      "command": "billing",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "acl": {
       "source": "plugins/zilliz/skills/acl/SKILL.md",
+      "command": "acl",
       "sha": "35c86c000c91abb35f3eeed5cca15ebd69cba4d5"
     },
     "external-collection": {
       "source": "plugins/zilliz/skills/external-collection/SKILL.md",
+      "command": "external-collection",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "job": {
       "source": "plugins/zilliz/skills/job/SKILL.md",
+      "command": "job",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "on-demand-cluster": {
       "source": "plugins/zilliz/skills/on-demand-cluster/SKILL.md",
+      "command": "on-demand-cluster",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "privatelink": {
       "source": "plugins/zilliz/skills/privatelink/SKILL.md",
+      "command": "privatelink",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     },
     "diagnose": {
       "source": "plugins/zilliz/skills/diagnose/SKILL.md",
+      "command": "diagnose",
       "sha": "a672ba8a1959534b278419080eb0cf3b84f8f148"
     },
     "ask-zilliz": {
       "source": "plugins/zilliz/skills/ask-zilliz/SKILL.md",
+      "command": "ask",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
     }
   }

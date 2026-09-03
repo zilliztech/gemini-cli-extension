@@ -33,19 +33,23 @@ dangling `/zilliz:` link) until it is added to `DOMAINS`.
 If the user wants to resync onboarding commands too, do it manually: diff
 against `zilliz-plugin/commands/quickstart.md` / `status.md` and merge by hand.
 
-## Three things the script does that are easy to break
+## Four things the script does that are easy to break
 
-1. **`HELP_CMDS`** — a skill name is not always a `zilliz` subcommand. `user-role`
+1. **`COMMAND_NAMES`** — the command file, its reference dir, and every
+   cross-reference follow this map when the command should not be named after
+   the upstream skill (`ask-zilliz` ships as `/zilliz:ask`). `.sync-state.json`
+   still keys on the upstream skill name and records the command alongside it.
+2. **`HELP_CMDS`** — a skill name is not always a `zilliz` subcommand. `user-role`
    is `zilliz user` + `zilliz role`, `project-region` is `project` + `volume`,
    `monitoring`/`diagnose` are `cluster` + `collection`, and `ask-zilliz` has no
    CLI surface at all (empty list = no `!{}` block). Get this wrong and the
    command silently injects "zilliz-cli not installed" instead of real help.
    Verify with `zilliz <cmd> --help` before adding a mapping.
-2. **`ASSET_DIRS`** — `ask-zilliz` ships 14 reference files, copied into
-   `references/ask-zilliz/`. The prompt resolves that directory at runtime by
+3. **`ASSET_DIRS`** — `ask-zilliz` ships 14 reference files, copied into
+   `references/ask/` (named for the command). The prompt resolves that directory at runtime by
    probing the install location, so the files must actually be committed. The
    script errors out rather than emitting a prompt pointing at a missing dir.
-3. **`REWRITE`** — `ask-zilliz` upstream depends on an Inkeep MCP server this
+4. **`REWRITE`** — `ask-zilliz` upstream depends on an Inkeep MCP server this
    extension does not ship; its Inkeep directives are rewritten onto the bundled
    references plus https://docs.zilliz.com. A surviving `Inkeep` mention fails
    the sync loudly, so upstream edits to that skill need a rewrite rule, not a
