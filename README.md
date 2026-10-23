@@ -53,7 +53,9 @@ If `zilliz-cli` is not installed, run `/zilliz:setup` after installing the exten
 | `/zilliz:user-role` | Users, roles, and privilege management |
 | `/zilliz:acl` | Cloud-level RBAC: org/project roles, member grants, SCIM groups |
 | `/zilliz:monitoring` | Cluster and collection metrics |
-| `/zilliz:project-region` | Projects and storage volumes |
+| `/zilliz:project-region` | Projects and region bindings |
+| `/zilliz:volume` | Managed storage volumes for staging import data |
+| `/zilliz:storage-integration` | Customer-owned S3 / Azure Blob / GCS bucket integrations |
 | `/zilliz:billing` | Usage and invoice management |
 | `/zilliz:external-collection` | Refresh jobs for external (Vector Lake-backed) collections |
 | `/zilliz:job` | Async Cloud Job status and waiting |

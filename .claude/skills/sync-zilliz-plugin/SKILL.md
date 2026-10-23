@@ -15,10 +15,11 @@ phrasing, wraps the body in the TOML command template (with `!{zilliz <domain>
 
 ## Scope
 
-**In scope (19 domain commands, auto-synced):**
+**In scope (21 domain commands, auto-synced):**
 cluster, database, collection, partition, index, vector, import, backup,
 user-role, acl, monitoring, project-region, billing, external-collection, job,
-on-demand-cluster, privatelink, diagnose, ask-zilliz.
+on-demand-cluster, privatelink, diagnose, ask-zilliz, volume,
+storage-integration.
 
 That is every skill upstream ships except the onboarding trio below. If upstream
 adds another, references to it render as a prose pointer at upstream (not a
@@ -40,7 +41,7 @@ against `zilliz-plugin/commands/quickstart.md` / `status.md` and merge by hand.
    the upstream skill (`ask-zilliz` ships as `/zilliz:ask`). `.sync-state.json`
    still keys on the upstream skill name and records the command alongside it.
 2. **`HELP_CMDS`** — a skill name is not always a `zilliz` subcommand. `user-role`
-   is `zilliz user` + `zilliz role`, `project-region` is `project` + `volume`,
+   is `zilliz user` + `zilliz role`, `project-region` is just `project` (volumes moved to their own skill),
    `monitoring`/`diagnose` are `cluster` + `collection`, and `ask-zilliz` has no
    CLI surface at all (empty list = no `!{}` block). Get this wrong and the
    command silently injects "zilliz-cli not installed" instead of real help.

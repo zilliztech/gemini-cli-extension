@@ -1,7 +1,7 @@
 {
   "upstream": "zilliztech/zilliz-plugin",
   "branch": "main",
-  "syncedAt": "2026-09-03T09:38:02.907Z",
+  "syncedAt": "2026-10-23T08:41:23.736Z",
   "files": {
     "cluster": {
       "source": "plugins/zilliz/skills/cluster/SKILL.md",
@@ -36,7 +36,7 @@
     "import": {
       "source": "plugins/zilliz/skills/import/SKILL.md",
       "command": "import",
-      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+      "sha": "a7620d282c706447e380745785c832a4dfda1f69"
     },
     "backup": {
       "source": "plugins/zilliz/skills/backup/SKILL.md",
@@ -56,7 +56,7 @@
     "project-region": {
       "source": "plugins/zilliz/skills/project-region/SKILL.md",
       "command": "project-region",
-      "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+      "sha": "a7620d282c706447e380745785c832a4dfda1f69"
     },
     "billing": {
       "source": "plugins/zilliz/skills/billing/SKILL.md",
@@ -97,6 +97,16 @@
       "source": "plugins/zilliz/skills/ask-zilliz/SKILL.md",
       "command": "ask",
       "sha": "673ccccae22d0894f5143c114c8f82b85e7be9f8"
+    },
+    "volume": {
+      "source": "plugins/zilliz/skills/volume/SKILL.md",
+      "command": "volume",
+      "sha": "a7620d282c706447e380745785c832a4dfda1f69"
+    },
+    "storage-integration": {
+      "source": "plugins/zilliz/skills/storage-integration/SKILL.md",
+      "command": "storage-integration",
+      "sha": "a7620d282c706447e380745785c832a4dfda1f69"
     }
   }
 }

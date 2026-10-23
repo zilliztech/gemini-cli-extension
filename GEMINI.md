@@ -67,6 +67,7 @@ user to confirm**:
 - `zilliz user drop` / `zilliz role drop`
 - `zilliz partition drop`
 - `zilliz volume delete`
+- `zilliz storage-integration delete`
 - Any command with `--force`
 
 Asynchronous operations (`cluster create`, `backup create`, `import start`,
@@ -90,7 +91,9 @@ command until completion before reporting success.
 | **user-role** | Manage users, roles, passwords, privileges (Dedicated only) | `zilliz user list` |
 | **acl** | Cloud-level RBAC: org/project roles, member grants, SCIM groups | `zilliz acl role list --type org` |
 | **monitoring** | Cluster status, collection stats, time-series metrics | `zilliz cluster describe --cluster-id <id>` |
-| **project-region** | Manage projects, cloud providers, regions, storage volumes | `zilliz project list` |
+| **project-region** | Create, list, describe, upgrade, delete projects; bind regions | `zilliz project list` |
+| **volume** | Create, list, describe, delete managed storage volumes; upload files | `zilliz volume list` |
+| **storage-integration** | Register customer-owned S3 / Azure Blob / GCS buckets | `zilliz storage-integration list` |
 | **billing** | Check usage, list invoices, view invoice details (OAuth only) | `zilliz billing usage --last 7d` |
 | **external-collection** | Trigger, describe, list refresh jobs for external collections | `zilliz external-collection refresh list` |
 | **job** | Check or wait on async Cloud Jobs (backup, import, restore, clone) | `zilliz job describe --job-id <id> --wait` |
@@ -130,7 +133,9 @@ command until completion before reporting success.
 | `/zilliz:user-role` | User, role & privilege management |
 | `/zilliz:acl` | Cloud-level RBAC over orgs, projects & clusters |
 | `/zilliz:monitoring` | Metrics, stats, and load states |
-| `/zilliz:project-region` | Projects and storage volumes |
+| `/zilliz:project-region` | Projects and region bindings |
+| `/zilliz:volume` | Managed storage volumes |
+| `/zilliz:storage-integration` | External storage integrations |
 | `/zilliz:billing` | Usage and invoice management |
 | `/zilliz:external-collection` | External collection refresh jobs |
 | `/zilliz:job` | Async Cloud Job status and waiting |

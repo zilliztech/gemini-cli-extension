@@ -6,7 +6,7 @@
 //   node scripts/sync.mjs --check     # exit 1 if anything differs from upstream
 //   node scripts/sync.mjs --dry-run   # print what would change, don't write
 //
-// Scope: the 13 domain commands. setup.toml, quickstart.toml, status.toml are
+// Scope: the 21 domain commands. setup.toml, quickstart.toml, status.toml are
 // hand-maintained (setup has no upstream; quickstart/status have been adapted
 // for Gemini CLI framing).
 //
@@ -27,7 +27,7 @@ const DOMAINS = [
   'cluster', 'database', 'collection', 'partition', 'index', 'vector',
   'import', 'backup', 'user-role', 'acl', 'monitoring', 'project-region', 'billing',
   'external-collection', 'job', 'on-demand-cluster', 'privatelink', 'diagnose',
-  'ask-zilliz',
+  'ask-zilliz', 'volume', 'storage-integration',
 ];
 
 // A skill name is not always a `zilliz` subcommand. Map the ones that differ, so
@@ -36,7 +36,7 @@ const DOMAINS = [
 const HELP_CMDS = {
   'user-role': ['user', 'role'],
   'monitoring': ['cluster', 'collection'],
-  'project-region': ['project', 'volume'],
+  'project-region': ['project'],
   'diagnose': ['cluster', 'collection'],
   'ask-zilliz': [],
 };
